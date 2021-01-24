@@ -20,9 +20,9 @@ public class ParkwebMsUsersApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		System.out.println("Pass = " + bCryptPasswordEncoder.encode("JRE@rt56"));
-//		System.out.println("Pass = " + bCryptPasswordEncoder.encode("JRES84@k"));
-//		System.out.println("Pass = " + bCryptPasswordEncoder.encode("OREA34@"));
+//		System.out.println("PASS = " + bCryptPasswordEncoder.encode("JRE@rt56"));
+//		System.out.println("PASS = " + bCryptPasswordEncoder.encode("JRES84@k"));
+//		System.out.println("PASS = " + bCryptPasswordEncoder.encode("OREA34@d"));
 	}
 
 }

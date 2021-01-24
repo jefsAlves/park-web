@@ -20,7 +20,7 @@ public class ResourceHandlerException {
 		StandardError error = new StandardError();
 		error.setTimestamp(Instant.now());
 		error.setStatus(status.value());
-		error.setError("Resource not found!");
+		error.setError("Email Invalid!");
 		error.setMessage(e.getMessage());
 		error.setPath(request.getRequestURI());
 		return ResponseEntity.status(status).body(error);

@@ -1,36 +1,26 @@
 package com.alvesjefs.parkweb.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity
-@Table(name = "TB_USERS")
-public class Users implements Serializable {
+import com.alvesjefs.parkweb.dto.UsersDTO;
+
+public class Users implements UserDetails, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
 	private String password;
 
-	@ManyToMany
-	@JoinTable(
-	name = "TB_USERS_ROLES",
-	joinColumns = @JoinColumn (name = "USER_ID"),
-	inverseJoinColumns = @JoinColumn (name = "ROLE_ID"))
 	private Set<Roles> roles = new HashSet<>();
 
 	public Users() {
@@ -41,6 +31,9 @@ public class Users implements Serializable {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+	}
+
+	public Users(UsersDTO usersDTO) {
 	}
 
 	public Long getId() {
@@ -63,7 +56,6 @@ public class Users implements Serializable {
 		return email;
 	}
 
-	@JoinColumn(unique = true)
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -75,7 +67,7 @@ public class Users implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public Set<Roles> getRoles() {
 		return roles;
 	}
@@ -110,6 +102,36 @@ public class Users implements Serializable {
 		builder.append(password);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles.stream().map(x -> new SimpleGrantedAuthority(x.getRoleName())).collect(Collectors.toSet());
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 
 }
